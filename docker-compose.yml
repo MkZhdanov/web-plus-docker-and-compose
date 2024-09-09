@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8082:8080"
+
+  backend:
+    container_name: "kpd-backend"
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    image: backend-compose-kpd
+    env_file: .env.example
+    restart: always
+    ports:
+      - "4000:3001"
+
+  postgres:
+    container_name: "postgres"
+    image: postgres:12.12-alpine
+    env_file: .env.example
+    restart: always
+
+  frontend:
+    container_name: "kpd-frontend"
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    image: frontend-compose-kpd
+    restart: always
+    ports:
+      - "8081:80"
